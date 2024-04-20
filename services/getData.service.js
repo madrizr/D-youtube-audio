@@ -20,15 +20,18 @@ const getDataService = async (url) => {
     try {
         const response = await fetch(urlApi, options);
 	    const result = await response.json();
+        if(result.code === 403) throw error;
 
         const { title, filesize, duration, msg, link} = result;
         const { status } = mensajes.VideoEncontrado;
         
         const fileSize = bytesToMb(filesize);
         const min = segToMin(duration);
+        const format = 'mp3';
+        const audioQuality = 'Medio';
 
         // downloadFile(url, title)
-        return { status, title, fileSize, min, msg, url: link}
+        return { status, title, fileSize, min, msg, url: link, format, audioQuality}
     } 
     catch(error){
         const { status, msg } = mensajes.VideoNoEncontrado;
