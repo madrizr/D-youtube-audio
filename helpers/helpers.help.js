@@ -32,10 +32,9 @@ const download = (url, format, title) => {
 const getIDYouTube = (url) => {
     const type_url1 = /(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([^&]+)/;
     const type_url2 = /(?:https?:\/\/)?(?:www\.)?youtu\.be\/?([^&]+)\?si=([^&]+)/;
-
+    
     const coincidence = url.match(type_url1);
     const coincidence2 = url.match(type_url2);
-
     if(coincidence) return coincidence[1]
     if(coincidence2) return coincidence2[1]
     else return null;

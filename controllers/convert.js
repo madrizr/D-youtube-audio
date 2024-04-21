@@ -34,7 +34,7 @@ const getDataAudio = async (req, res = response) => {
     } 
     catch(error){
         const { ok, msg } = mensajes.ErrorInesperado
-        return res.status(200).json({ ok, msg, error })
+        return res.json({ ok, msg, error })
     }
 }
 

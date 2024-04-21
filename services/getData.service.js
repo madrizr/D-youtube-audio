@@ -3,7 +3,8 @@ const {getIDYouTube, bytesToMb, segToMin} = require('../helpers/helpers.help')
 
 const mensajes = {
     VideoNoEncontrado: {status: 404, msg: 'video not found'},
-    VideoEncontrado: {status: 200, msg: 'success'}
+    VideoEncontrado: {status: 200, msg: 'success'},
+    ErrorInterno: {status: 500, msg: 'Vuelva a intentar mas tarde'}
 }
 
 const getDataService = async (url) => {
@@ -20,9 +21,12 @@ const getDataService = async (url) => {
     try {
         const response = await fetch(urlApi, options);
 	    const result = await response.json();
-        if(result.code === 403) throw error;
+        if(result.code === 403) throw mensajes.VideoNoEncontrado;
 
         const { title, filesize, duration, msg, link} = result;
+        
+        if(msg === 'in process') throw mensajes.ErrorInterno;
+        
         const { status } = mensajes.VideoEncontrado;
         
         const fileSize = bytesToMb(filesize);
@@ -34,8 +38,7 @@ const getDataService = async (url) => {
         return { status, title, fileSize, min, msg, url: link, format, audioQuality}
     } 
     catch(error){
-        const { status, msg } = mensajes.VideoNoEncontrado;
-        return { status, msg, error }
+        return  error
     }
 }
 
